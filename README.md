@@ -1,4 +1,4 @@
-# charchapoint
+# Charcha Point
 Location based discussion forum
 
 # To build project
@@ -6,3 +6,6 @@ Location based discussion forum
 Download dependencis `glide install`
 Build `make build`
 Run `cd out && ./charchapoint`
+
+# To run mobile app
+`cd mobileapp && react-native run-android`
