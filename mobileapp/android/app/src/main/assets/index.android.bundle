@@ -1485,11 +1485,6 @@ return Array.from(arr);
 };
 })(typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : this);
 __d(0 /* CharchaPoint/index.android.js */, function(global, require, module, exports) {
-
-
-
-
-
 var _react=require(12 /* react */);var _react2=babelHelpers.interopRequireDefault(_react);
 var _reactNative=require(43 /* react-native */);var
 
@@ -1498,12 +1493,49 @@ var _reactNative=require(43 /* react-native */);var
 
 
 
-CharchaPoint=function(_Component){babelHelpers.inherits(CharchaPoint,_Component);function CharchaPoint(){babelHelpers.classCallCheck(this,CharchaPoint);return babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(CharchaPoint).apply(this,arguments));}babelHelpers.createClass(CharchaPoint,[{key:'render',value:function render()
+CharchaPoint=function(_Component){babelHelpers.inherits(CharchaPoint,_Component);
+function CharchaPoint(props){babelHelpers.classCallCheck(this,CharchaPoint);var _this=babelHelpers.possibleConstructorReturn(this,Object.getPrototypeOf(CharchaPoint).call(this,
+props));
+_this.state={
+initialPosition:'unknown',
+lastPosition:'unknown'};return _this;
+
+}babelHelpers.createClass(CharchaPoint,[{key:'componentDidMount',value:function componentDidMount()
+
+{var _this2=this;
+navigator.geolocation.getCurrentPosition(
+function(position){
+var initialPosition=JSON.stringify(position);
+alert(initialPosition);
+_this2.setState({initialPosition:initialPosition});
+},
+function(error){return alert(error);},
+{enableHighAccuracy:true,timeout:20000,maximumAge:1000});
+
+this.watchID=navigator.geolocation.watchPosition(function(position){
+var lastPosition=JSON.stringify(position);
+_this2.setState({lastPosition:lastPosition});
+});
+}},{key:'componentWillUnmount',value:function componentWillUnmount()
+
+{
+navigator.geolocation.clearWatch(this.watchID);
+}},{key:'render',value:function render()
+
 {
 return(
 _react2.default.createElement(_reactNative.View,{style:styles.container},
-_react2.default.createElement(_reactNative.Text,{style:styles.welcome},'Welcome to Charcha Point!')));
+_react2.default.createElement(_reactNative.Text,{style:styles.welcome},'Welcome to Charcha Point! New'),
 
+
+
+_react2.default.createElement(_reactNative.Text,null,
+_react2.default.createElement(_reactNative.Text,{style:styles.welcome},'Initial position: '),
+this.state.initialPosition),
+
+_react2.default.createElement(_reactNative.Text,null,
+_react2.default.createElement(_reactNative.Text,{style:styles.welcome},'Current position: '),
+this.state.lastPosition)));
 
 
 
