@@ -1,0 +1,4 @@
+package: github.com/tw-spic/charchapoint
+import:
+- package: github.com/gorilla/handlers
+- package: github.com/gorilla/mux
