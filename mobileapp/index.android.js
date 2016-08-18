@@ -1,41 +1,47 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- * @flow
- */
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  View,
+  Navigator
 } from 'react-native';
 
+var FirstPage = require('./app/components/FirstPage');
+var SecondPage = require('./app/components/SecondPage');
+
 class CharchaPoint extends Component {
+  setUpRoute(route) {
+    if (route.sceneConfig) {
+      return route.sceneConfig;
+    }
+    return Navigator.SceneConfigs.FloatFromRight;
+  }
+
+  renderScene(route, navigator) {
+    var routeId = route.id;
+    if (routeId === 'FirstPage') {
+      return (
+        <FirstPage navigator={navigator}/>
+      );
+    }
+
+    if(routeId === 'SecondPage') {
+      return (
+        <SecondPage navigator={navigator}/>
+      );
+    }
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to Charcha Point!
-        </Text>
-      </View>
+      <Navigator
+        initialRoute={{id: 'FirstPage', name: 'Index'}}
+        renderScene={this.renderScene.bind(this)}
+        configureScene={this.setUpRoute.bind(this)}
+      />
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-});
 
 AppRegistry.registerComponent('CharchaPoint', () => CharchaPoint);
