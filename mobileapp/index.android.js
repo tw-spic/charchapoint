@@ -7,8 +7,7 @@ import {
   Navigator
 } from 'react-native';
 
-var FirstPage = require('./app/components/FirstPage');
-var SecondPage = require('./app/components/SecondPage');
+var RandomUserContainer = require('./app/containers/');
 
 class CharchaPoint extends Component {
   setUpRoute(route) {
@@ -22,7 +21,7 @@ class CharchaPoint extends Component {
     var routeId = route.id;
     if (routeId === 'FirstPage') {
       return (
-        <FirstPage navigator={navigator}/>
+        <RandomUserContainer navigator={navigator}/>
       );
     }
 
