@@ -6,12 +6,12 @@ CREATE DATABASE charchapoint;
 
 CREATE TABLE zones(
    id BIGSERIAL PRIMARY KEY,
+   name TEXT NOT NULL,
+   description TEXT NOT NULL,
    lat DECIMAL NOT NULL,
    long DECIMAL NOT NULL,
    radius DECIMAL NOT NULL
 );
-
--- CREATE USER charchapoint_user WITH PASSWORD '******';
 
 REVOKE CONNECT ON DATABASE charchapoint FROM PUBLIC;
 
