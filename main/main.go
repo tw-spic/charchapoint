@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -11,6 +12,7 @@ import (
 
 	gh "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
 )
 
 func main() {
@@ -23,6 +25,14 @@ func main() {
 	log.SetOutput(f)
 
 	conf, err := c.ReadFromFile("config.json")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	connString := fmt.Sprintf("user=%s password=%s dbname=smart_scale sslmode=disable",
+		conf.DBUsername, conf.DBPassword)
+	db, err := sql.Open("postgres", connString)
+	defer db.Close()
 	if err != nil {
 		log.Fatal(err)
 	}

@@ -1,5 +1,5 @@
-hash: 39e1079a3806e7378b5c1e0e1095df6504f7e1c8c347e24f757b2bc312a4167f
-updated: 2016-08-17T10:36:01.028942408+05:30
+hash: 2f35793874fcc9fd3814da82ad6743b3768b717a5e90059d0442d3bee079ac77
+updated: 2016-08-20T00:06:48.09540676+05:30
 imports:
 - name: github.com/gorilla/context
   version: 01ef6ff48fdcdcb29ae84f90f10f33dac24845a0
@@ -7,4 +7,8 @@ imports:
   version: a5775781a543af3c6b9f5baf10995e4d14168950
 - name: github.com/gorilla/mux
   version: cf79e51a62d8219d52060dfc1b4e810414ba2d15
+- name: github.com/lib/pq
+  version: 80f8150043c80fb52dee6bc863a709cdac7ec8f8
+  subpackages:
+  - oid
 testImports: []

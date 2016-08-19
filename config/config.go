@@ -6,7 +6,11 @@ import (
 )
 
 type Configuration struct {
-	Port int
+	Port       int
+	DBServer   string
+	DBPort     int
+	DBUsername string
+	DBPassword string
 }
 
 func ReadFromFile(path string) (Configuration, error) {

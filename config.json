@@ -1,3 +1,7 @@
 {
-	"Port": 8080
+	"Port":8080,
+	"DBServer":"localhost",
+	"DBPort":5432,
+	"DBUsername": "charchapoint_user",
+	"DBPassword": "xxxxx"
 }
