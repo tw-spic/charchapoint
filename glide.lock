@@ -1,5 +1,5 @@
-hash: 2f35793874fcc9fd3814da82ad6743b3768b717a5e90059d0442d3bee079ac77
-updated: 2016-08-20T00:06:48.09540676+05:30
+hash: 14b32d850a402e5b81fbc1dc8c5d03f446502cbdb41ab91af98086e48ccfde9e
+updated: 2016-08-20T00:29:14.284131544+05:30
 imports:
 - name: github.com/gorilla/context
   version: 01ef6ff48fdcdcb29ae84f90f10f33dac24845a0
@@ -11,4 +11,8 @@ imports:
   version: 80f8150043c80fb52dee6bc863a709cdac7ec8f8
   subpackages:
   - oid
+- name: github.com/stretchr/testify
+  version: f390dcf405f7b83c997eac1b06768bb9f44dec18
+  subpackages:
+  - assert
 testImports: []
