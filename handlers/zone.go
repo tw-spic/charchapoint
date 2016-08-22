@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
+	"strconv"
 
 	m "github.com/tw-spic/charchapoint/models"
 )
@@ -39,5 +40,47 @@ func CreateZoneHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 		}
 
 		w.WriteHeader(http.StatusCreated)
+	}
+}
+
+func GetZoneHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		lat, err := strconv.ParseFloat(r.FormValue("lat"), 64)
+		if err != nil {
+			log.Println("Get zone invalid lat: ", err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		long, err := strconv.ParseFloat(r.FormValue("long"), 64)
+		if err != nil {
+			log.Println("Get zone invalid long: ", err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		radius, err := strconv.ParseFloat(r.FormValue("radius"), 64)
+		if err != nil {
+			log.Println("Get zone invalid radius: ", err)
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		zones, err := m.GetZonesWithinRadiusFrom(lat, long, radius, db)
+		if err != nil {
+			log.Println("Get zone error fetching data from db:", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		data, err := json.Marshal(zones)
+		if err != nil {
+			log.Println("Get zone error converting to JSON:", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusOK)
+		w.Write(data)
 	}
 }
