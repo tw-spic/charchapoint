@@ -13,6 +13,15 @@ CREATE TABLE zones(
    radius DECIMAL NOT NULL
 );
 
+CREATE EXTENSION pgcrypto; -- for uuid generation gen_random_uuid()
+
+CREATE TABLE messages(
+	id UUID PRIMARY KEY,
+	device_id TEXT NOT NULL,
+	message TEXT NOT NULL,
+	msg_time TIMESTAMPTZ NOT NULL
+);
+
 REVOKE CONNECT ON DATABASE charchapoint FROM PUBLIC;
 
 GRANT CONNECT ON DATABASE charchapoint TO charchapoint_user;
