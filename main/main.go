@@ -29,7 +29,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	connString := fmt.Sprintf("user=%s password=%s dbname=smart_scale sslmode=disable",
+	connString := fmt.Sprintf("user=%s password=%s dbname=charchapoint sslmode=disable",
 		conf.DBUsername, conf.DBPassword)
 	db, err := sql.Open("postgres", connString)
 	defer db.Close()
@@ -39,6 +39,7 @@ func main() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/", h.ServeIndexPage())
+	r.HandleFunc("/zone", h.CreateZoneHandler(db)).Methods("POST")
 	r.PathPrefix("/public").Handler(http.StripPrefix("/public", http.FileServer(http.Dir("./public"))))
 	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", conf.Port), gh.LoggingHandler(f, r)))
 }

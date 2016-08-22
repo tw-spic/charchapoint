@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"database/sql"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -8,7 +9,7 @@ import (
 	m "github.com/tw-spic/charchapoint/models"
 )
 
-func CreateZoneHandler() func(http.ResponseWriter, *http.Request) {
+func CreateZoneHandler(db *sql.DB) func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if r.Body == nil {
 			log.Println("Create zone: Empty request body")
@@ -29,6 +30,14 @@ func CreateZoneHandler() func(http.ResponseWriter, *http.Request) {
 			w.WriteHeader(http.StatusBadRequest)
 			return
 		}
+
+		err = z.SaveToDb(db)
+		if err != nil {
+			log.Println("Create zone save to db :", err)
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
 		w.WriteHeader(http.StatusCreated)
 	}
 }

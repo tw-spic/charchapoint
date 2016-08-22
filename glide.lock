@@ -1,5 +1,5 @@
-hash: 14b32d850a402e5b81fbc1dc8c5d03f446502cbdb41ab91af98086e48ccfde9e
-updated: 2016-08-20T00:29:14.284131544+05:30
+hash: ab34ddb43741ff99866dd0d1caccbdd548138b1f8130ecb025c45d222044d0ba
+updated: 2016-08-22T11:31:30.917358423+05:30
 imports:
 - name: github.com/gorilla/context
   version: 01ef6ff48fdcdcb29ae84f90f10f33dac24845a0
@@ -15,4 +15,6 @@ imports:
   version: f390dcf405f7b83c997eac1b06768bb9f44dec18
   subpackages:
   - assert
+- name: gopkg.in/DATA-DOG/go-sqlmock.v1
+  version: 9958e5c69de03e97ec215b23f6fcae1f600c3fb6
 testImports: []
