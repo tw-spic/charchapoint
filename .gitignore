@@ -1,7 +1,7 @@
 # Project specific
 out/
 vendor/
-
+google-services.json
 
 ######### React native
 # OSX
