@@ -10,6 +10,7 @@ import {
 import { NativeModules } from 'react-native';
 // import FCM from 'react-native-fcm';
 import * as firebase from 'firebase'
+import { GiftedChat } from 'react-native-gifted-chat';
 
 const firebaseConfig = {
   apiKey: "masked",
@@ -23,10 +24,8 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 class Example extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: "hello"
-    }
-
+    this.state = {messages: []};
+    this.onSend = this.onSend.bind(this);
   }
   // componentDidMount() {
   //   FCM.requestPermissions(); // for iOS
@@ -49,20 +48,31 @@ class Example extends React.Component {
   //   FCM.unsubscribeFromTopic('/topics/foo-bar');
   // }
 
-  componentDidMount() {
-      firebase.database().ref('messages').set({});
-    var messagesRef = firebase.database().ref('messages');
-    messagesRef.on('child_added', (msg) => {
-      console.log(msg.val());
-      this.setState({data: this.state.data + "\n" + msg.key +" : "+ msg.val().message});
+  componentWillMount() {
+    this.deviceId = Math.trunc(Math.random() * 100); // Some random id for now
+    this.setState({
+      messages: [],
     });
   }
 
-  _clickPost(){
-    NativeModules.MyToastAndroid.show('Awesome', 300);
-  firebase.database().ref('messages').push({
-        message: "hello from nexus 5"
+  componentDidMount() {
+    firebase.database().ref('messages').set({});
+    var messagesRef = firebase.database().ref('messages');
+    messagesRef.on('child_added', (msg) => {
+      this.setState((previousState) => {
+        return {
+          messages: GiftedChat.append(previousState.messages, msg.val().message),
+        };
       });
+    });
+
+  }
+
+  onSend(messages = []) {
+    firebase.database().ref('messages').push({
+        message: messages
+    });
+    
   }
 
   componentWillUnmount() {
@@ -72,14 +82,15 @@ class Example extends React.Component {
   }
 
   render() {
-    NativeModules.MyToastAndroid.show('Awesome', 300);
+    console.log(this.deviceId);
     return (
-      <View>
-        <TouchableWithoutFeedback
-          onPress={() => this._clickPost()}>
-          <Text>Click me. {this.state.data}</Text>
-        </TouchableWithoutFeedback>
-      </View>
+      <GiftedChat
+        messages={this.state.messages}
+        onSend={this.onSend}
+        user={{
+          _id: this.deviceId,
+        }}
+      />
     );
   }
 }
