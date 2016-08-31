@@ -2,6 +2,7 @@
 out/
 vendor/
 google-services.json
+*.keystore
 
 ######### React native
 # OSX
