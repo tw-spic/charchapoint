@@ -9,6 +9,7 @@
     "axios": "^0.13.1",
     "express": "^4.14.0",
     "firebase": "^3.3.0",
+    "geodist": "^0.2.1",
     "react": "15.2.1",
     "react-native": "0.31.0",
     "react-native-camera-roll-picker": "^1.1.7",
