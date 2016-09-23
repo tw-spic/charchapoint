@@ -106,7 +106,7 @@ class Example extends React.Component {
       var lat = position.coords.latitude;
       var long = position.coords.longitude;
       var currZone = this.findCurrentZone(lat,long);
-      ToastAndroid.show("Current zone is " + currZone.Name, ToastAndroid.LONG);
+      ToastAndroid.show("You are in " + currZone.Name + " zone. \n" + currZone.Description, ToastAndroid.LONG);
       this.setState((previousState) => {
         return {
           ...previousState,
