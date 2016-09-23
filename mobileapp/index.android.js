@@ -6,6 +6,7 @@ import {
   View,
   AppRegistry,
   ToastAndroid,
+  ActivityIndicator,
   TouchableWithoutFeedback
 } from 'react-native';
 import { NativeModules } from 'react-native';
@@ -21,6 +22,25 @@ const firebaseConfig = {
   databaseURL: "charcha-point.firebaseio.com",
   storageBucket: "charcha-point.appspot.com"
 };
+
+const styles = StyleSheet.create({
+  view:{
+    flex:1,
+    flexDirection:'column',
+    alignItems:'center',
+    justifyContent:'center'
+  },
+  titleText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    paddingBottom:20,
+  },  
+  normalText: {
+    textAlign: 'center',
+    paddingBottom:20,
+  },
+});
 
 const zones = [{ // get zones from server
   Id:123,
@@ -124,15 +144,25 @@ class Example extends React.Component {
   }
 
   render() {
-    return (
-      <GiftedChat
-        messages={this.state.messages}
-        onSend={this.onSend}
-        user={{
-          _id: this.deviceId,
-        }}
-      />
-    );
+    if(!this.state.zone){
+       return (
+           <View style={styles.view}>
+              <Text style={styles.titleText} >Charcha point </Text>
+              <Text style={styles.normalText}  >We are finding zone near to you. Please wait...</Text>
+              <ActivityIndicator color="#0000ff" size="large"/>
+            </View>
+        );
+     } else {
+      return (
+        <GiftedChat
+          messages={this.state.messages}
+          onSend={this.onSend}
+          user={{
+            _id: this.deviceId,
+          }}
+        />
+      );
+    }
   }
 }
 
