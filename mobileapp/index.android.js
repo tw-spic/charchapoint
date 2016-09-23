@@ -13,6 +13,7 @@ import { NativeModules } from 'react-native';
 import * as firebase from 'firebase'
 import { GiftedChat } from 'react-native-gifted-chat';
 import geodist from 'geodist';
+import DeviceInfo from 'react-native-device-info';
 
 const firebaseConfig = {
   apiKey: "masked",
@@ -66,7 +67,7 @@ class Example extends React.Component {
   }
 
   componentWillMount() {
-    this.deviceId = Math.trunc(Math.random() * 100); // Some random id for now
+    this.deviceId = DeviceInfo.getUniqueID();
     this.setState({
       messages: [],
     });
@@ -77,7 +78,7 @@ class Example extends React.Component {
     //register location watcher
     navigator.geolocation.getCurrentPosition(
       (position) => {},
-      (error) => alert(error),
+      (error) => {},
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
@@ -123,7 +124,6 @@ class Example extends React.Component {
   }
 
   render() {
-    console.log(this.deviceId);
     return (
       <GiftedChat
         messages={this.state.messages}
