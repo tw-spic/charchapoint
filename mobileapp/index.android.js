@@ -10,7 +10,6 @@ import {
   TouchableWithoutFeedback
 } from 'react-native';
 import { NativeModules } from 'react-native';
-// import FCM from 'react-native-fcm';
 import * as firebase from 'firebase'
 import { GiftedChat } from 'react-native-gifted-chat';
 import geodist from 'geodist';
@@ -77,43 +76,32 @@ const zones = [{ // get zones from server
  
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-class Example extends React.Component {
+class CharchaPoint extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {messages: []};
+    this.deviceId = DeviceInfo.getUniqueID();
     this.onSend = this.onSend.bind(this);
     this.findCurrentZone = this.findCurrentZone.bind(this);
     this.subscribeMessages = this.subscribeMessages.bind(this);
-  }
-
-  componentWillMount() {
-    this.deviceId = DeviceInfo.getUniqueID();
-    this.setState({
-      messages: [],
-    });
+    this.registerLocationWatcher = this.registerLocationWatcher.bind(this);
+    this.setCurrentZone = this.setCurrentZone.bind(this);
+    this.state = {messages: []};
   }
 
   componentDidMount() {
+    this.registerLocationWatcher();
+  }
 
-    //register location watcher
+  registerLocationWatcher() {
     navigator.geolocation.getCurrentPosition(
       (position) => {},
       (error) => {},
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
     this.watchID = navigator.geolocation.watchPosition((position) => {
-      var lastPosition = JSON.stringify(position);
-      var lat = position.coords.latitude;
-      var long = position.coords.longitude;
-      var currZone = this.findCurrentZone(lat,long);
-      ToastAndroid.show("You are in " + currZone.Name + " zone. \n" + currZone.Description, ToastAndroid.LONG);
-      this.setState((previousState) => {
-        return {
-          ...previousState,
-          zone:currZone
-        };
-      });
-      this.subscribeMessages();
+      this.lat = position.coords.latitude;
+      this.long = position.coords.longitude;
+      this.setCurrentZone();
     });
   }
 
@@ -122,13 +110,38 @@ class Example extends React.Component {
     messagesRef.on('child_added', (msg) => {
       this.setState((previousState) => {
         return {
+          ...previousState,
           messages: GiftedChat.append(previousState.messages, msg.val().message),
         };
       });
     });
   }
 
+  setCurrentZone() {
+    if (!this.lat || !this.long) {
+      return;
+    }
+
+    var currZone = this.findCurrentZone(this.lat, this.long);
+    if (!currZone || currZone === this.state.zone) {
+      return;
+    }
+
+    ToastAndroid.show("You are in " + currZone.Name + " zone. \n" + currZone.Description, ToastAndroid.LONG);
+    this.setState((previousState) => {
+      return {
+        ...previousState,
+        zone:currZone
+      };
+    });
+
+    this.subscribeMessages();
+  }
+
   findCurrentZone(lat, long) {
+    if (!zones) {
+      return;
+    }
     return zones.find((zone) => { return geodist({lat:lat,lon:long}, { lat:zone.Lat, lon:zone.Long }, {unit: 'meters'}) < zone.Radius})
   }
 
@@ -166,4 +179,4 @@ class Example extends React.Component {
   }
 }
 
-AppRegistry.registerComponent('CharchaPoint', () => Example);
+AppRegistry.registerComponent('CharchaPoint', () => CharchaPoint);
