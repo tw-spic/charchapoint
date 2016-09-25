@@ -7,6 +7,7 @@ import {
   AppRegistry,
   ToastAndroid,
   ActivityIndicator,
+  AsyncStorage,
   TouchableWithoutFeedback
 } from 'react-native';
 import { NativeModules } from 'react-native';
@@ -62,8 +63,14 @@ class CharchaPoint extends React.Component {
   }
 
   updateZones() {
+    AsyncStorage.getItem("zones").then((value) => {
+        if(value) {
+          this.zones = JSON.parse(value);
+        }
+      }).done();
     firebase.database().ref('zones/zones').on('value', (snapshot) => {
       this.zones = snapshot.val();
+      AsyncStorage.setItem("zones", JSON.stringify(this.zones));
       if(!this.state.zone) {
         this.setCurrentZone();
       }
