@@ -16,6 +16,8 @@ import { GiftedChat } from 'react-native-gifted-chat';
 import geodist from 'geodist';
 import DeviceInfo from 'react-native-device-info';
 
+const MAX_NO_OF_MSGS_PER_GROUP = 100;
+
 const firebaseConfig = {
   apiKey: "masked",
   authDomain: "1028630304114-nec2l2fmac4p32dke638rofrv9u1q9tt.apps.googleusercontent.com",
@@ -63,14 +65,22 @@ class CharchaPoint extends React.Component {
   }
 
   updateZones() {
-    AsyncStorage.getItem("zones").then((value) => {
-        if(value) {
-          this.zones = JSON.parse(value);
-        }
-      }).done();
+    try {
+      AsyncStorage.getItem("zones").then((value) => {
+          if(value) {
+            this.zones = JSON.parse(value);
+          }
+        }).done();
+    } catch (err) {
+      console.log(err);
+    }
     firebase.database().ref('zones/zones').on('value', (snapshot) => {
       this.zones = snapshot.val();
-      AsyncStorage.setItem("zones", JSON.stringify(this.zones));
+      try {
+        AsyncStorage.setItem("zones", JSON.stringify(this.zones));
+      } catch (err) {
+        console.log(err);
+      }
       if(!this.state.zone) {
         this.setCurrentZone();
       }
@@ -91,7 +101,7 @@ class CharchaPoint extends React.Component {
   }
 
   subscribeMessages() {
-    var messagesRef = firebase.database().ref("messages/" + this.state.zone.Id);
+    var messagesRef = firebase.database().ref("messages/" + this.state.zone.Id).limitToLast(MAX_NO_OF_MSGS_PER_GROUP);
     messagesRef.on('child_added', (msg) => {
       this.setState((previousState) => {
         return {
