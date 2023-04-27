@@ -11,7 +11,7 @@ define org.genivi.commonapi.someip.deployment for interface truck_api.greetings.
 
     
     method freak {
-        SomeIpMethodID = 30000
+        SomeIpMethodID = 30001
         SomeIpReliable = true
     }
 }
