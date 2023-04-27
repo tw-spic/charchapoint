@@ -1,0 +1,29 @@
+import "platform:/plugin/org.genivi.commonapi.someip/deployment/CommonAPI-SOMEIP_deployment_spec.fdepl"
+import "greetings_api.fidl"
+
+define org.genivi.commonapi.someip.deployment for interface truck_api.greetings.Greetings_api {
+    SomeIpServiceID = 1234
+
+    method greet {
+        SomeIpMethodID = 30000
+        SomeIpReliable = true
+    }
+
+    
+    method freak {
+        SomeIpMethodID = 30000
+        SomeIpReliable = true
+    }
+}
+
+define org.genivi.commonapi.someip.deployment for provider as Service {
+    instance truck_api.greetings.Greetings_api {
+        InstanceId = "truck_api.greetings.Greetings_api"
+        
+        SomeIpInstanceID = 5678
+    
+        SomeIpUnicastAddress = "169.254.102.230"
+        SomeIpReliableUnicastPort = 30499
+        SomeIpUnreliableUnicastPort = 30499
+    }
+}
